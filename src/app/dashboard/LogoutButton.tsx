@@ -18,18 +18,18 @@ export default function LogoutButton() {
     <button
       onClick={handleLogout}
       onTouchEnd={(e) => { e.preventDefault(); handleLogout(); }}
-      className="btn-smooth btn-smooth-outline text-red-500 hover:!bg-red-500 hover:!text-white hover:!border-red-500 transition-all duration-300"
-      style={{ minWidth: 36, minHeight: 36, touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' }}
       aria-label="تسجيل الخروج"
+      style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' }}
+      className="text-red-400 hover:text-red-500 transition-colors"
     >
-      {/* Desktop: text + icon */}
-      <span className="hidden lg:flex items-center gap-2 px-4 py-2 text-xs font-black">
-        <LogOut size={14} />
-        تسجيل الخروج
+      {/* Desktop: outlined button with text */}
+      <span className="hidden lg:flex items-center gap-2 border border-red-400 hover:bg-red-500 hover:text-white hover:border-red-500 rounded-xl px-3 py-1.5 text-xs font-black transition-all">
+        <LogOut size={13} />
+        خروج
       </span>
-      {/* Mobile: tiny icon only */}
-      <span className="flex lg:hidden items-center justify-center w-8 h-8">
-        <LogOut size={16} />
+      {/* Mobile: tiny icon only — 14px to not compete with profile photo */}
+      <span className="flex lg:hidden items-center justify-center" style={{ width: 28, height: 28 }}>
+        <LogOut size={14} strokeWidth={2} />
       </span>
     </button>
   );

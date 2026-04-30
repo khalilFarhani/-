@@ -91,6 +91,23 @@ body {
 }
 
 /* =========================================
+   MOBILE NAV MENU — always solid background
+   ========================================= */
+.mobile-nav-solid {
+  background: #0f172a !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  opacity: 1 !important;
+}
+.light .mobile-nav-solid {
+  background: #f4f7fe !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+
+
+/* =========================================
    BUBBLY CARD — dark default, light override
    ========================================= */
 .bubbly-card {

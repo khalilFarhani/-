@@ -30,17 +30,13 @@ export default function MobileNavMenu({ items }: { items: NavItem[] }) {
 
       {isOpen && (
         <div
-          className="rounded-2xl p-4 flex flex-col gap-2 shadow-2xl border"
+          className="mobile-nav-solid rounded-2xl p-4 flex flex-col gap-2 shadow-2xl border border-white/10"
           style={{
             position: 'fixed',
             top: 80,
             left: 16,
             right: 16,
             zIndex: 9999,
-            background: '#0f172a',
-            borderColor: 'rgba(255,255,255,0.15)',
-            backdropFilter: 'none',
-            WebkitBackdropFilter: 'none',
           }}
         >
           {items.map((item) => (
@@ -60,4 +56,3 @@ export default function MobileNavMenu({ items }: { items: NavItem[] }) {
     </div>
   );
 }
-

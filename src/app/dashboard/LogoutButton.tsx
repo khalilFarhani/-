@@ -27,9 +27,9 @@ export default function LogoutButton() {
         <LogOut size={13} />
         خروج
       </span>
-      {/* Mobile: tiny icon only — 14px to not compete with profile photo */}
-      <span className="flex lg:hidden items-center justify-center" style={{ width: 28, height: 28 }}>
-        <LogOut size={14} strokeWidth={2} />
+      {/* Mobile: tiny icon only — absolutely non-obstructive */}
+      <span className="flex lg:hidden items-center justify-center" style={{ width: 22, height: 22 }}>
+        <LogOut size={12} strokeWidth={2.5} />
       </span>
     </button>
   );

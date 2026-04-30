@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import bcrypt from 'bcryptjs';
 
 export async function GET() {
   try {
+    const hashedPassword = await bcrypt.hash('password123', 10);
+
     // Clean up
     await prisma.chatMessage.deleteMany({});
     await prisma.like.deleteMany({});
@@ -15,7 +18,7 @@ export async function GET() {
       data: {
         fullName: 'أ. رحمة علية',
         email: 'rahma@school.tn',
-        password: 'password123',
+        password: hashedPassword,
         gender: 'female',
         teachingStartYear: 2015
       }
@@ -25,7 +28,7 @@ export async function GET() {
       data: {
         fullName: 'أ. إسراء عروج',
         email: 'israa@school.tn',
-        password: 'password123',
+        password: hashedPassword,
         gender: 'female',
         teachingStartYear: 2018
       }
@@ -35,7 +38,7 @@ export async function GET() {
       data: {
         fullName: 'أ. أحمد علي',
         email: 'ahmed@school.tn',
-        password: 'password123',
+        password: hashedPassword,
         gender: 'male',
         teachingStartYear: 2010
       }

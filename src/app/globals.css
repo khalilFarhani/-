@@ -1,41 +1,47 @@
 @import "tailwindcss";
 
+/* =========================================
+   LIGHT MODE — Clean Modern SaaS Style
+   Like the reference: soft lavender bg, white cards, colored accents
+   ========================================= */
 :root {
-  /* Premier Design - Maximum Vibrancy Palette */
-  --background: #fcfcfd;
-  --foreground: #020617;
-  
-  --primary: #7c3aed;      /* Violet 600 */
-  --primary-rgb: 124, 58, 237;
-  --secondary: #0891b2;    /* Cyan 600 */
-  --secondary-rgb: 8, 145, 178;
-  --accent: #e11d48;       /* Rose 600 */
-  --accent-rgb: 225, 29, 72;
-  
-  --success: #059669;
-  --success-rgb: 5, 150, 105;
-  --warning: #d97706;
-  --danger: #dc2626;
-  
-  --card: rgba(255, 255, 255, 0.8);
-  --border: rgba(0, 0, 0, 0.08);
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  
+  --background: #eef2ff;          /* Very light indigo — almost white but tinted */
+  --foreground: #1e1b4b;          /* Deep indigo text */
+
+  --primary: #6366f1;             /* Indigo-500 — the main accent */
+  --primary-rgb: 99, 102, 241;
+  --secondary: #8b5cf6;           /* Violet-500 */
+  --secondary-rgb: 139, 92, 246;
+  --accent: #f59e0b;              /* Amber-500 */
+  --accent-rgb: 245, 158, 11;
+
+  --success: #10b981;
+  --success-rgb: 16, 185, 129;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+
+  --card: #ffffff;                /* Pure white cards */
+  --border: #e0e7ff;              /* Light indigo border */
+  --muted: #f5f3ff;               /* Very light violet for muted areas */
+  --muted-foreground: #6366f1;
+
   --radius: 20px;
 }
 
+/* =========================================
+   DARK MODE (untouched)
+   ========================================= */
 .dark {
   --background: #020617;
   --foreground: #f8fafc;
-  
+
   --primary: #a78bfa;
   --primary-rgb: 167, 139, 250;
   --secondary: #22d3ee;
   --secondary-rgb: 34, 211, 238;
   --accent: #fb7185;
   --accent-rgb: 251, 113, 133;
-  
+
   --card: rgba(15, 23, 42, 0.7);
   --border: rgba(255, 255, 255, 0.1);
   --muted: #1e293b;
@@ -58,38 +64,97 @@
   --radius-xl: var(--radius);
 }
 
-/* Base Styles */
+/* =========================================
+   BASE STYLES
+   ========================================= */
 html {
-  font-size: 14px; /* Scale down everything that uses rem */
+  font-size: 14px;
 }
 
 body {
-  background-color: var(--background);
   color: var(--foreground);
   font-family: "Inter", system-ui, sans-serif;
   overflow-x: hidden;
-  transition: background-color 0.5s ease;
+  transition: background 0.4s ease, color 0.4s ease;
 }
 
-/* Glassmorphism Components */
+/* =========================================
+   LIGHT MODE — Clean solid background
+   Soft indigo-tinted white, like the reference image
+   ========================================= */
+html:not(.dark) body {
+  background-color: #eef2ff;
+  min-height: 100vh;
+}
+
+/* White cards with clean shadows (like the reference) */
+html:not(.dark) .bg-white {
+  background-color: #ffffff !important;
+  box-shadow: 0 2px 16px rgba(99, 102, 241, 0.08), 0 1px 4px rgba(0,0,0,0.04) !important;
+}
+html:not(.dark) .bg-gray-50 {
+  background-color: #f5f3ff !important;
+}
+html:not(.dark) .bg-gray-100 {
+  background-color: #ede9fe !important;
+}
+html:not(.dark) .bg-gray-200 {
+  background-color: #ddd6fe !important;
+}
+html:not(.dark) .bg-slate-50 {
+  background-color: #f5f3ff !important;
+}
+html:not(.dark) .bg-slate-100 {
+  background-color: #ede9fe !important;
+}
+html:not(.dark) .bg-slate-800 {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
+}
+html:not(.dark) .bg-slate-900 {
+  background: linear-gradient(135deg, #3730a3, #5b21b6) !important;
+}
+
+/* =========================================
+   DARK MODE BACKGROUND
+   ========================================= */
+html.dark body {
+  background-color: #020617;
+}
+
+/* =========================================
+   CARDS — Clean white elevated style
+   ========================================= */
 .bubbly-card {
-  background: var(--card);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid var(--border);
+  background: #ffffff;
+  border: 1px solid #e0e7ff;
   border-radius: var(--radius);
   padding: 1.25rem;
-  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.05);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.08), 0 1px 6px rgba(0,0,0,0.04);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark .bubbly-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 
 .bubbly-card:hover {
   transform: translateY(-4px);
-  border-color: var(--primary);
-  box-shadow: 0 16px 32px -8px rgba(var(--primary-rgb), 0.12);
+  border-color: #c7d2fe;
+  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.15), 0 4px 12px rgba(0,0,0,0.06);
 }
 
-/* Buttons */
+.dark .bubbly-card:hover {
+  border-color: rgba(167, 139, 250, 0.4);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.4);
+}
+
+/* =========================================
+   BUTTONS
+   ========================================= */
 .btn-smooth {
   padding: 0.6rem 1.4rem;
   border-radius: 9999px;
@@ -105,56 +170,94 @@ body {
   white-space: nowrap;
 }
 
-.btn-smooth:active {
-  transform: scale(0.95);
-}
+.btn-smooth:active { transform: scale(0.95); }
 
 .btn-smooth-primary {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: white;
-  box-shadow: 0 10px 20px -5px rgba(var(--primary-rgb), 0.4);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
 }
 
 .btn-smooth-primary:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 15px 30px -5px rgba(var(--primary-rgb), 0.5);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 14px 28px rgba(99, 102, 241, 0.45);
 }
 
 .btn-smooth-outline {
-  background: var(--card);
-  border: 2px solid var(--border);
-  color: var(--foreground);
+  background: #ffffff;
+  border: 2px solid #e0e7ff;
+  color: #1e1b4b;
+}
+
+.dark .btn-smooth-outline {
+  background: rgba(15, 23, 42, 0.5);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
 }
 
 .btn-smooth-outline:hover {
-  border-color: var(--primary);
-  background: var(--background);
-  transform: translateY(-4px);
+  border-color: #6366f1;
+  background: #eef2ff;
+  transform: translateY(-3px);
 }
 
-/* Inputs */
+.dark .btn-smooth-outline:hover {
+  border-color: #a78bfa;
+  background: rgba(15, 23, 42, 0.8);
+}
+
+/* =========================================
+   INPUTS
+   ========================================= */
 .input-smooth {
   width: 100%;
-  background: var(--card);
-  border: 2px solid var(--border);
+  background: #ffffff;
+  border: 2px solid #e0e7ff;
   border-radius: 14px;
   padding: 0.65rem 1rem;
   font-weight: 700;
   font-size: 0.875rem;
-  color: var(--foreground);
+  color: #1e1b4b;
   transition: all 0.3s ease;
   outline: none;
+  box-shadow: 0 1px 4px rgba(99, 102, 241, 0.06);
+}
+
+.dark .input-smooth {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
 }
 
 .input-smooth:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
   transform: translateY(-1px);
 }
 
-/* Text & Utilities */
+/* =========================================
+   NAVBAR — Glass effect in light, dark in dark
+   ========================================= */
+html:not(.dark) .smooth-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid #e0e7ff;
+  box-shadow: 0 4px 24px rgba(99, 102, 241, 0.08);
+}
+
+html.dark .smooth-glass {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* =========================================
+   TEXT & UTILITIES
+   ========================================= */
 .text-gradient {
-  background: linear-gradient(to right, var(--primary), var(--secondary));
+  background: linear-gradient(to right, #6366f1, #8b5cf6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -166,46 +269,36 @@ body {
 
 @keyframes softEntrance {
   from { opacity: 0; transform: translateY(24px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  75% { transform: translateX(4px); }
+  25%       { transform: translateX(-4px); }
+  75%       { transform: translateX(4px); }
 }
 
-.animate-shake {
-  animation: shake 0.4s ease-in-out;
-}
+.animate-shake { animation: shake 0.4s ease-in-out; }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
+/* =========================================
+   CUSTOM SCROLLBAR
+   ========================================= */
+::-webkit-scrollbar { width: 8px; }
 
-::-webkit-scrollbar-track {
-  background: var(--background);
-}
+::-webkit-scrollbar-track { background: transparent; }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--muted);
+  background: #c7d2fe;
   border-radius: 10px;
-  border: 3px solid var(--background);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
+.dark ::-webkit-scrollbar-thumb {
+  background: #1e293b;
 }
 
-/* Grid & Layout Helpers */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
+::-webkit-scrollbar-thumb:hover { background: #6366f1; }
 
-.smooth-glass {
-  background: var(--card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border);
-}
+/* =========================================
+   HELPERS
+   ========================================= */
+.no-scrollbar::-webkit-scrollbar { display: none; }

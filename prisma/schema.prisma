@@ -1,0 +1,237 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 BigInt              @id @default(autoincrement())
+  fullName           String?             @map("full_name") @db.VarChar(255)
+  email              String              @unique @db.VarChar(255)
+  password           String              @db.VarChar(255)
+  gender             String?             @db.VarChar(50)
+  image              String?
+  teachingStartYear  Int?                @map("teaching_start_year")
+  createdAt          DateTime?           @default(now()) @map("created_at") @db.Timestamp(6)
+  chatMessages       ChatMessage[]
+  comments           Comment[]
+  diagnosticAttempts DiagnosticAttempt[]
+  forumPosts         ForumPost[]
+  likes              Like[]
+  reports            PostReport[]
+  quizAttempts       QuizAttempt[]
+  reflectionEntries  ReflectionEntry[]
+
+  bookletVisits     BookletVisit[]
+
+  @@map("users")
+}
+
+model BookletVisit {
+  id        BigInt    @id @default(autoincrement())
+  userId    BigInt    @map("user_id")
+  visitedAt DateTime  @default(now()) @map("visited_at") @db.Timestamp(6)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("booklet_visits")
+}
+
+model BookletPage {
+  id        BigInt    @id @default(autoincrement())
+  title     String?   @db.VarChar(255)
+  content   String?
+  pageOrder Int?      @map("page_order")
+  image     String?   @db.VarChar(255)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+
+  @@map("booklet_pages")
+}
+
+model Quiz {
+  id          BigInt        @id @default(autoincrement())
+  title       String?       @db.VarChar(255)
+  description String?
+  type        String?       @db.VarChar(100)
+  createdAt   DateTime?     @default(now()) @map("created_at") @db.Timestamp(6)
+  questions   Question[]
+  attempts    QuizAttempt[]
+
+  @@map("quizzes")
+}
+
+model Question {
+  id            BigInt   @id @default(autoincrement())
+  quizId        BigInt?  @map("quiz_id")
+  questionText  String?  @map("question_text")
+  axis          String?  @db.VarChar(255)
+  questionOrder Int?     @map("question_order")
+  options       Option[]
+  quiz          Quiz?    @relation(fields: [quizId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("questions")
+}
+
+model Option {
+  id         BigInt    @id @default(autoincrement())
+  questionId BigInt?   @map("question_id")
+  optionText String?   @map("option_text")
+  isCorrect  Boolean?  @map("is_correct")
+  score      Int?
+  feedback   String?
+  question   Question? @relation(fields: [questionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("options")
+}
+
+model QuizAttempt {
+  id         BigInt    @id @default(autoincrement())
+  userId     BigInt?   @map("user_id")
+  quizId     BigInt?   @map("quiz_id")
+  score      Int?
+  percentage Float?
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  quiz       Quiz?     @relation(fields: [quizId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user       User?     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("quiz_attempts")
+}
+
+model DiagnosticQuestion {
+  id           BigInt             @id @default(autoincrement())
+  axis         String?            @db.VarChar(255)
+  questionText String?            @map("question_text")
+  orderNumber  Int?               @map("order_number")
+  answers      DiagnosticAnswer[]
+  options      DiagnosticOption[]
+
+  @@map("diagnostic_questions")
+}
+
+model DiagnosticOption {
+  id         BigInt              @id @default(autoincrement())
+  questionId BigInt?             @map("question_id")
+  optionText String?             @map("option_text")
+  score      Int?
+  answers    DiagnosticAnswer[]
+  question   DiagnosticQuestion? @relation(fields: [questionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("diagnostic_options")
+}
+
+model DiagnosticAttempt {
+  id         BigInt             @id @default(autoincrement())
+  userId     BigInt?            @map("user_id")
+  totalScore Int?               @map("total_score")
+  percentage Float?
+  level      String?            @db.VarChar(100)
+  createdAt  DateTime?          @default(now()) @map("created_at") @db.Timestamp(6)
+  answers    DiagnosticAnswer[]
+  user       User?              @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("diagnostic_attempts")
+}
+
+model DiagnosticAnswer {
+  id         BigInt              @id @default(autoincrement())
+  attemptId  BigInt?             @map("attempt_id")
+  questionId BigInt?             @map("question_id")
+  optionId   BigInt?             @map("option_id")
+  attempt    DiagnosticAttempt?  @relation(fields: [attemptId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  option     DiagnosticOption?   @relation(fields: [optionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  question   DiagnosticQuestion? @relation(fields: [questionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("diagnostic_answers")
+}
+
+model ReflectionEntry {
+  id                 BigInt    @id @default(autoincrement())
+  userId             BigInt?   @map("user_id")
+  date               DateTime? @db.Date
+  subject            String?   @db.VarChar(255)
+  className          String?   @map("class_name") @db.VarChar(255)
+  lessonTopic        String?   @map("lesson_topic") @db.VarChar(255)
+  boysNumber         Int?      @map("boys_number")
+  girlsNumber        Int?      @map("girls_number")
+  cognitiveGoal      String?   @map("cognitive_goal") @db.VarChar(255)
+  skillGoal          String?   @map("skill_goal") @db.VarChar(255)
+  emotionalGoal      String?   @map("emotional_goal") @db.VarChar(255)
+  girlsParticipation Int?      @map("girls_participation")
+  boysParticipation  Int?      @map("boys_participation")
+  behaviorNotes      String?   @map("behavior_notes")
+  genderReflection   String?   @map("gender_reflection")
+  difficulties       String?
+  suggestions        String?
+  feeling            String?   @db.VarChar(255)
+  createdAt          DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  user               User?     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("reflection_entries")
+}
+
+model ForumPost {
+  id        BigInt       @id @default(autoincrement())
+  userId    BigInt?      @map("user_id")
+  title     String?      @db.VarChar(255)
+  content   String?
+  category  String?      @db.VarChar(100)
+  imageUrl  String?      @map("image_url")
+  fileUrl   String?      @map("file_url")
+  createdAt DateTime?    @default(now()) @map("created_at") @db.Timestamp(6)
+  comments  Comment[]
+  user      User?        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  likes     Like[]
+  reports   PostReport[]
+
+  @@map("forum_posts")
+}
+
+model Comment {
+  id        BigInt     @id @default(autoincrement())
+  postId    BigInt?    @map("post_id")
+  userId    BigInt?    @map("user_id")
+  content   String?
+  createdAt DateTime?  @default(now()) @map("created_at") @db.Timestamp(6)
+  post      ForumPost? @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("comments")
+}
+
+model Like {
+  id        BigInt    @id @default(autoincrement())
+  postId    BigInt    @map("post_id")
+  userId    BigInt    @map("user_id")
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  post      ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([postId, userId])
+  @@map("likes")
+}
+
+model PostReport {
+  id        BigInt    @id @default(autoincrement())
+  postId    BigInt    @map("post_id")
+  userId    BigInt    @map("user_id")
+  reason    String?
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  post      ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("post_reports")
+}
+
+model ChatMessage {
+  id        BigInt    @id @default(autoincrement())
+  userId    BigInt    @map("user_id")
+  content   String?
+  type      String    @default("text") @db.VarChar(50)
+  fileUrl   String?   @map("file_url")
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("chat_messages")
+}

@@ -5,6 +5,16 @@ import Link from 'next/link';
 import LogoutButton from '@/app/dashboard/LogoutButton';
 import ThemeToggle from '@/components/ThemeToggle';
 import { Scale } from 'lucide-react';
+import MobileNavMenu from './MobileNavMenu';
+
+const navItems = [
+  { name: 'الرئيسية', href: '/dashboard',  icon: '🏠' },
+  { name: 'الكتيب',   href: '/booklet',    icon: '📖' },
+  { name: 'الكويزات', href: '/quizzes',    icon: '🎮' },
+  { name: 'التشخيص',  href: '/diagnostic', icon: '✨' },
+  { name: 'التأمل',   href: '/reflections',icon: '🧘' },
+  { name: 'المنتدى',  href: '/forum',      icon: '💬' },
+];
 
 export default async function AppNavbar() {
   const cookieStore = await cookies();
@@ -34,14 +44,7 @@ export default async function AppNavbar() {
             </div>
           </Link>
           <div className="hidden lg:flex gap-1">
-            {[
-              { name: 'الرئيسية', href: '/dashboard',  icon: '🏠' },
-              { name: 'الكتيب',   href: '/booklet',    icon: '📖' },
-              { name: 'الكويزات', href: '/quizzes',    icon: '🎮' },
-              { name: 'التشخيص',  href: '/diagnostic', icon: '✨' },
-              { name: 'التأمل',   href: '/reflections',icon: '🧘' },
-              { name: 'المنتدى',  href: '/forum',      icon: '💬' },
-            ].map((item) => (
+            {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -54,8 +57,9 @@ export default async function AppNavbar() {
           </div>
         </div>
 
-        {/* Right: Theme + Profile + Logout */}
+        {/* Right: Theme + Profile + Logout + Mobile Menu */}
         <div className="flex items-center gap-3">
+          <MobileNavMenu items={navItems} />
           <ThemeToggle />
           <div className="h-7 w-px bg-border/60" />
           {user && (

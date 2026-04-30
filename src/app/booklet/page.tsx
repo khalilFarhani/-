@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Scale, GraduationCap, Users, BookOpen, Brain, School, Sparkles, Bookmark, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Scale, GraduationCap, Users, BookOpen, Brain, School, Sparkles, Bookmark, ArrowRight, ArrowLeft, Venus, Mars } from 'lucide-react';
 
 const bookletPages = [
   {
@@ -202,10 +202,12 @@ export default function BookletPage() {
   const page = bookletPages[currentPage];
 
   return (
-    <div className="min-h-screen p-4 md:p-8 flex flex-col items-center justify-center bg-background text-foreground relative overflow-hidden" dir="rtl">
+    <div className="min-h-screen p-4 md:p-8 flex flex-col items-center justify-center text-foreground relative overflow-hidden" dir="rtl">
       {/* Background Ambience */}
       <div className="absolute top-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-[-20%] left-[-10%] w-[60vw] h-[60vw] bg-secondary/10 rounded-full blur-[150px] pointer-events-none" />
+      
+
 
       {/* Header Actions */}
       <div className="w-full max-w-[950px] flex justify-between items-center mb-8 relative z-20">

@@ -3,14 +3,17 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import ThemeToggle from '@/components/ThemeToggle';
-import { Scale, GraduationCap, Users, BookOpen } from 'lucide-react';
+import { Scale, GraduationCap, Users, BookOpen, Menu, X, School, Venus, Mars } from 'lucide-react';
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const user = localStorage.getItem('user') || localStorage.getItem('currentUser');
-    if (user) setIsLoggedIn(true);
+    try {
+      const user = localStorage.getItem('user') || localStorage.getItem('currentUser');
+      if (user) setIsLoggedIn(true);
+    } catch (e) {}
   }, []);
 
   const navItems = [
@@ -22,16 +25,10 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center w-full selection:bg-primary/30 relative overflow-hidden" dir="rtl">
-      {/* Pedagogical Background Decorations */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0 overflow-hidden">
-         <div className="absolute top-[10%] right-[5%] animate-float"><Scale size={180} /></div>
-         <div className="absolute top-[40%] left-[2%] animate-float-delayed"><GraduationCap size={200} /></div>
-         <div className="absolute bottom-[20%] right-[8%] animate-float"><Users size={170} /></div>
-         <div className="absolute bottom-[5%] left-[10%] animate-float-delayed"><BookOpen size={140} /></div>
-      </div>
+    <div className="min-h-screen text-foreground flex flex-col items-center w-full selection:bg-primary/30 relative overflow-hidden" dir="rtl">
+
       {/* Navbar */}
-      <nav className="fixed top-0 z-50 w-full px-4 py-2 flex justify-center animate-soft">
+      <nav className="fixed top-0 z-50 w-full px-4 py-2 flex justify-center">
         <div className="w-full max-w-[1440px] smooth-glass px-6 py-3 flex justify-between items-center rounded-2xl mt-4">
           <Link href="/" className="flex items-center gap-3 group">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform">
@@ -43,6 +40,7 @@ export default function Home() {
             </div>
           </Link>
 
+          {/* Desktop Nav */}
           <div className="hidden md:flex gap-8 items-center">
             {isLoggedIn && navItems.map((item) => (
               <Link
@@ -59,7 +57,7 @@ export default function Home() {
             <ThemeToggle />
 
             {isLoggedIn ? (
-              <Link href="/login" className="btn-smooth btn-smooth-primary py-2 px-6">تسجيل الدخول</Link>
+              <Link href="/dashboard" className="btn-smooth btn-smooth-primary py-2 px-6">لوحة القيادة</Link>
             ) : (
               <div className="flex items-center gap-4">
                 <Link href="/login" className="btn-smooth btn-smooth-primary py-2 px-6">تسجيل الدخول</Link>
@@ -67,14 +65,50 @@ export default function Home() {
               </div>
             )}
           </div>
+
+          {/* Mobile Menu Toggle */}
+          <div className="md:hidden flex items-center gap-4">
+            <ThemeToggle />
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onTouchEnd={(e) => { e.preventDefault(); setIsMobileMenuOpen(v => !v); }}
+              style={{ minWidth: 44, minHeight: 44, touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              className="text-foreground focus:outline-none"
+              aria-label="Toggle Menu"
+            >
+              {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Nav Dropdown */}
+        {isMobileMenuOpen && (
+          <div className="absolute top-full left-4 right-4 mt-2 smooth-glass rounded-2xl p-4 flex flex-col gap-4 shadow-2xl md:hidden animate-soft border border-border">
+            {isLoggedIn && navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-base font-bold opacity-80 hover:opacity-100 hover:text-primary transition-colors py-2 border-b border-border/50 last:border-0"
+              >
+                {item.name}
+              </Link>
+            ))}
+            {isLoggedIn ? (
+              <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)} className="btn-smooth btn-smooth-primary py-3 px-6 text-center mt-2">لوحة القيادة</Link>
+            ) : (
+              <div className="flex flex-col gap-3 mt-2">
+                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="btn-smooth btn-smooth-primary py-3 px-6 text-center">تسجيل الدخول</Link>
+                <Link href="/register" onClick={() => setIsMobileMenuOpen(false)} className="btn-smooth btn-smooth-outline py-3 px-6 text-center">ابدأ مجاناً</Link>
+              </div>
+            )}
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
       <section className="w-full flex justify-center pt-48 pb-32 px-6 relative overflow-hidden">
-        <div className="absolute top-1/4 right-1/4 w-[30vw] h-[30vw] bg-primary/20 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 left-1/3 w-[40vw] h-[40vw] bg-secondary/20 rounded-full blur-[150px] pointer-events-none" />
-
         <div className="w-full max-w-[1440px] flex flex-col items-center text-center relative z-10">
           <div className="animate-soft flex flex-col items-center">
             <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-black uppercase tracking-widest mb-10 shadow-inner">
@@ -85,7 +119,7 @@ export default function Home() {
               منصة تربوية شاملة برؤية جديدة
             </div>
 
-            <h1 className="text-6xl lg:text-8xl font-black mb-8 leading-[1.1] tracking-tight relative">
+            <h1 className="text-5xl md:text-6xl lg:text-8xl font-black mb-8 leading-[1.2] md:leading-[1.1] tracking-tight relative">
               تعلم برؤية <br />
               <span className="text-gradient">عادلة وشاملة</span>
             </h1>
@@ -260,8 +294,6 @@ export default function Home() {
       </section>
       {/* Testimonials Section */}
       <section className="w-full flex justify-center py-24 px-6 relative overflow-hidden bg-background">
-        <div className="absolute left-0 top-1/2 w-96 h-96 bg-primary/10 rounded-full blur-[120px] -z-10 pointer-events-none" />
-        <div className="absolute right-0 bottom-0 w-64 h-64 bg-secondary/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
         <div className="w-full max-w-[1440px]">
           <div className="text-center mb-16 animate-soft">
             <h2 className="text-4xl md:text-5xl font-black mb-4">أصوات <span className="text-gradient">من الميدان</span></h2>

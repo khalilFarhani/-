@@ -8,7 +8,7 @@ const encodedKey = new TextEncoder().encode(secretKey);
 export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
 
-  // 1. Define protected paths
+  // 1. Define paths
   const protectedPaths = [
     '/dashboard',
     '/booklet',
@@ -19,34 +19,62 @@ export async function middleware(req: NextRequest) {
     '/reflections'
   ];
 
-  const isProtected = protectedPaths.some(p => path.startsWith(p));
+  const authPaths = [
+    '/',
+    '/login',
+    '/register'
+  ];
 
-  // If the path is not protected, allow it
-  if (!isProtected) {
+  const isProtected = protectedPaths.some(p => path.startsWith(p));
+  const isAuthPath = authPaths.includes(path);
+
+  // If the path is not protected and not an auth path, allow it
+  if (!isProtected && !isAuthPath) {
     return NextResponse.next();
   }
 
-  // 2. Get session cookie for protected paths
+  // 2. Get session cookie
   const session = req.cookies.get('session')?.value;
 
-  // 3. If no session, redirect to login
-  if (!session) {
-    return NextResponse.redirect(new URL('/login', req.url));
+  // 3. Handle protected routes
+  if (isProtected) {
+    if (!session) {
+      return NextResponse.redirect(new URL('/login', req.url));
+    }
+    try {
+      await jwtVerify(session, encodedKey);
+      return NextResponse.next();
+    } catch (error) {
+      const response = NextResponse.redirect(new URL('/login', req.url));
+      response.cookies.delete('session');
+      return response;
+    }
   }
 
-  // 4. Verify session
-  try {
-    await jwtVerify(session, encodedKey);
-    return NextResponse.next();
-  } catch (error) {
-    const response = NextResponse.redirect(new URL('/login', req.url));
-    response.cookies.delete('session');
-    return response;
+  // 4. Handle auth paths (landing, login, register)
+  if (isAuthPath) {
+    if (session) {
+      try {
+        await jwtVerify(session, encodedKey);
+        // If valid session exists, redirect to dashboard automatically
+        return NextResponse.redirect(new URL('/dashboard', req.url));
+      } catch (error) {
+        // Invalid session, clear cookie and let them stay
+        const response = NextResponse.next();
+        response.cookies.delete('session');
+        return response;
+      }
+    }
   }
+
+  return NextResponse.next();
 }
 
 export const config = {
   matcher: [
+    '/',
+    '/login',
+    '/register',
     '/dashboard/:path*',
     '/booklet/:path*',
     '/quizzes/:path*',

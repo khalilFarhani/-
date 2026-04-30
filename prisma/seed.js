@@ -1,11 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: "postgresql://postgres:postgres@localhost:5432/roujiDB"
-    }
-  }
-});
+const prisma = new PrismaClient();
 
 async function main() {
   // Create Teachers

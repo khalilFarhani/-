@@ -50,6 +50,13 @@ export default function ProChatPage() {
         fetch('/api/auth/me'),
         fetch('/api/chat/messages')
       ]);
+
+      if (!meRes.ok) {
+        await fetch('/api/auth/logout', { method: 'POST' });
+        window.location.href = '/login';
+        return;
+      }
+
       const meData = await meRes.json();
       if (meData.user) setCurrentUser(meData.user);
       const msgsData = await msgsRes.json();

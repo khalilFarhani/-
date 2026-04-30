@@ -35,7 +35,11 @@ export default function ProfilePage() {
     const load = async () => {
       try {
         const meRes = await fetch('/api/auth/me');
-        if (!meRes.ok) { router.push('/login'); return; }
+        if (!meRes.ok) {
+           await fetch('/api/auth/logout', { method: 'POST' });
+           window.location.href = '/login';
+           return;
+        }
         const { user: u } = await meRes.json();
         setUser(u);
         setForm(f => ({

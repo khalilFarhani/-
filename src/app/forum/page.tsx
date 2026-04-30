@@ -78,10 +78,13 @@ export default function ForumPage() {
   const fetchData = async () => {
     try {
       const meRes = await fetch('/api/auth/me');
-      if (meRes.ok) {
-        const meData = await meRes.json();
-        setCurrentUser(meData.user);
+      if (!meRes.ok) {
+         await fetch('/api/auth/logout', { method: 'POST' });
+         window.location.href = '/login';
+         return;
       }
+      const meData = await meRes.json();
+      setCurrentUser(meData.user);
 
       const [postsRes, topRes, commentsRes] = await Promise.all([
         fetch('/api/forum/posts'),

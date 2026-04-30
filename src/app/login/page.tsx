@@ -30,14 +30,17 @@ export default function LoginPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'حدث خطأ أثناء تسجيل الدخول');
 
-      localStorage.setItem('currentUser', JSON.stringify({
-        id: data.user.userId,
-        email: data.user.email,
-        fullName: data.user.fullName
-      }));
+      try {
+        localStorage.setItem('currentUser', JSON.stringify({
+          id: data.user.userId,
+          email: data.user.email,
+          fullName: data.user.fullName
+        }));
+      } catch (e) {
+        console.warn('localStorage not available', e);
+      }
 
-      router.push('/dashboard');
-      router.refresh();
+      window.location.href = '/dashboard';
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -46,23 +49,15 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden selection:bg-primary/30 bg-background" dir="rtl">
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden py-24 selection:bg-primary/30" dir="rtl">
       {/* Theme Toggle in top corner */}
       <div className="absolute top-6 left-6 z-50">
         <ThemeToggle />
       </div>
 
-      {/* Pedagogical Background Decorations */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0 overflow-hidden">
-         <div className="absolute top-[10%] right-[5%] animate-float"><Scale size={180} /></div>
-         <div className="absolute top-[40%] left-[2%] animate-float-delayed"><GraduationCap size={200} /></div>
-         <div className="absolute bottom-[20%] right-[8%] animate-float"><Users size={170} /></div>
-         <div className="absolute bottom-[5%] left-[10%] animate-float-delayed"><BookOpen size={140} /></div>
-      </div>
 
-      {/* Decorative Blur Blobs */}
-      <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-secondary/10 rounded-full blur-[120px] pointer-events-none" />
+
+      {/* Decorative Blur Blobs removed for touch compatibility */}
 
       <div className="w-full max-w-md flex justify-between items-center mb-10 relative z-10">
         <Link href="/" className="flex items-center gap-3 group">

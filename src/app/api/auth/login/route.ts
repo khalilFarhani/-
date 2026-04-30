@@ -38,8 +38,8 @@ export async function POST(req: Request) {
     const cookieStore = await cookies();
     cookieStore.set('session', sessionToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24 * 7, // 1 week
+      secure: false, // allow over HTTP (local dev / phone on LAN)
+      sameSite: 'lax',
       path: '/',
     });
 

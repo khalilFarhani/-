@@ -5,24 +5,9 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import { 
-  BookOpen, 
-  Brain, 
-  TrendingUp, 
-  BarChart3, 
-  Target,
-  PenTool,
-  Zap,
-  Activity,
-  Award,
-  Star,
-  PieChart as PieIcon,
-  MessageSquare,
-  MessageCircle,
-  Heart,
-  Share2,
-  Scale,
-  GraduationCap,
-  Users
+  BookOpen, Brain, TrendingUp, BarChart3, Target,
+  PenTool, Zap, Activity, Award, Star, PieChart as PieIcon,
+  MessageSquare, MessageCircle, Heart, Share2, Scale, GraduationCap, Users
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -32,13 +17,26 @@ export default function ProfessionalDashboard() {
    const [stats, setStats] = useState<any>(null);
    const [currentUser, setCurrentUser] = useState<any>(null);
    const [loading, setLoading] = useState(true);
+   const [isLight, setIsLight] = useState(false);
+
+   useEffect(() => {
+      const check = () => setIsLight(document.documentElement.classList.contains('light'));
+      check();
+      const obs = new MutationObserver(check);
+      obs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+      return () => obs.disconnect();
+   }, []);
 
    useEffect(() => {
       const fetchData = async () => {
          try {
             // 1. Fetch real user data from DB (includes gender, image, etc.)
             const meRes = await fetch('/api/auth/me');
-            if (!meRes.ok) { window.location.href = '/login'; return; }
+            if (!meRes.ok) { 
+               await fetch('/api/auth/logout', { method: 'POST' });
+               window.location.href = '/login'; 
+               return; 
+            }
             const meData = await meRes.json();
             const user = meData.user;
             setCurrentUser(user);
@@ -63,24 +61,22 @@ export default function ProfessionalDashboard() {
       </div>
    );
 
+   const axisColor = isLight ? 'rgba(30,27,75,0.7)' : 'rgba(255,255,255,0.7)';
+   const labelColor = isLight ? '#1e1b4b' : '#fff';
+
    // 1. Line Chart: Diagnostic Evaluations - Pink
    const lineOption = {
       backgroundColor: 'transparent',
-      tooltip: { trigger: 'axis', backgroundColor: 'rgba(255, 255, 255, 0.95)', textStyle: { color: '#000' } },
-      xAxis: { type: 'category', data: (stats?.diagnostics || []).map((_: any, i: number) => `ت${i + 1}`), axisLabel: { color: 'rgba(255,255,255,0.7)', fontWeight: 'bold' } },
-      yAxis: { type: 'value', max: 100, axisLabel: { color: 'rgba(255,255,255,0.7)' }, splitLine: { show: false } },
+      tooltip: { trigger: 'axis', backgroundColor: 'rgba(255,255,255,0.95)', textStyle: { color: '#000' } },
+      xAxis: { type: 'category', data: (stats?.diagnostics || []).map((_: any, i: number) => `ت${i + 1}`), axisLabel: { color: axisColor, fontWeight: 'bold' } },
+      yAxis: { type: 'value', max: 100, axisLabel: { color: axisColor }, splitLine: { show: false } },
       series: [{ 
          data: (stats?.diagnostics || []).map((d: any) => d.percentage), 
          type: 'line', smooth: true, symbolSize: 12, 
-         itemStyle: { color: '#fb7185', borderColor: '#fff', borderWidth: 3 },
+         itemStyle: { color: '#fb7185', borderColor: isLight ? '#6366f1' : '#fff', borderWidth: 3 },
          lineStyle: { width: 6, color: '#fb7185' },
-         areaStyle: { 
-            color: {
-               type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
-               colorStops: [{ offset: 0, color: 'rgba(251, 113, 133, 0.4)' }, { offset: 1, color: 'transparent' }]
-            }
-         },
-         label: { show: true, position: 'top', color: '#fff', fontWeight: 'bold' }
+         areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: 'rgba(251,113,133,0.4)' }, { offset: 1, color: 'transparent' }] } },
+         label: { show: true, position: 'top', color: labelColor, fontWeight: 'bold' }
       }]
    };
 
@@ -88,31 +84,24 @@ export default function ProfessionalDashboard() {
    const barOption = {
       backgroundColor: 'transparent',
       tooltip: { trigger: 'axis', formatter: '{b}: {c} تأمل' },
-      xAxis: { type: 'category', data: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'], axisLabel: { color: 'rgba(255,255,255,0.8)', fontWeight: 'bold' } },
-      yAxis: { type: 'value', minInterval: 1, axisLabel: { color: 'rgba(255,255,255,0.7)' }, splitLine: { show: false } },
+      xAxis: { type: 'category', data: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'], axisLabel: { color: axisColor, fontWeight: 'bold' } },
+      yAxis: { type: 'value', minInterval: 1, axisLabel: { color: axisColor }, splitLine: { show: false } },
       series: [{ 
          data: stats?.weeklyActivity || [0,0,0,0,0,0,0], 
-         type: 'bar', 
-         barWidth: '35%', 
-         itemStyle: { 
-            borderRadius: [10, 10, 0, 0], 
-            color: {
-               type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
-               colorStops: [{ offset: 0, color: '#22d3ee' }, { offset: 1, color: '#0ea5e9' }]
-            }
-         } 
+         type: 'bar', barWidth: '35%', 
+         itemStyle: { borderRadius: [10, 10, 0, 0], color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: '#22d3ee' }, { offset: 1, color: '#0ea5e9' }] } } 
       }]
    };
 
-   // 3. Radar Chart: Inspired by Other Parts (Cyan & White on Dark)
+   // 3. Radar Chart
    const radarOption = {
       backgroundColor: 'transparent',
       tooltip: {
          trigger: 'item',
-         backgroundColor: 'rgba(15, 23, 42, 0.92)',
+         backgroundColor: isLight ? 'rgba(238,242,255,0.97)' : 'rgba(15,23,42,0.92)',
          borderColor: '#22d3ee',
          borderWidth: 1,
-         textStyle: { color: '#fff', fontWeight: 'bold', fontSize: 13 },
+         textStyle: { color: isLight ? '#1e1b4b' : '#fff', fontWeight: 'bold', fontSize: 13 },
          formatter: (params: any) => {
             const indicators = ['المشاركة', 'العاطفة', 'التوقعات', 'السلوك', 'المهام'];
             const values = params.value;
@@ -138,10 +127,10 @@ export default function ProfessionalDashboard() {
          radius: '65%',
          shape: 'polygon',
          splitNumber: 5,
-         axisName: { color: '#fff', fontWeight: 'bold', fontSize: 14, padding: [10, 10] },
-         splitLine: { lineStyle: { color: 'rgba(255,255,255,0.2)', width: 2 } }, 
+         axisName: { color: labelColor, fontWeight: 'bold', fontSize: 14, padding: [10, 10] },
+         splitLine: { lineStyle: { color: isLight ? 'rgba(99,102,241,0.2)' : 'rgba(255,255,255,0.2)', width: 2 } }, 
          splitArea: { show: false },
-         axisLine: { lineStyle: { color: 'rgba(255,255,255,0.2)' } }
+         axisLine: { lineStyle: { color: isLight ? 'rgba(99,102,241,0.2)' : 'rgba(255,255,255,0.2)' } }
       },
       series: [{ 
          type: 'radar', 
@@ -160,7 +149,7 @@ export default function ProfessionalDashboard() {
             symbol: 'circle',
             symbolSize: 12,
             emphasis: {
-               itemStyle: { color: '#fff', borderColor: '#22d3ee', borderWidth: 3, shadowBlur: 10, shadowColor: '#22d3ee' },
+               itemStyle: { color: isLight ? '#6366f1' : '#fff', borderColor: '#22d3ee', borderWidth: 3, shadowBlur: 10, shadowColor: '#22d3ee' },
                lineStyle: { width: 7 }
             }
          }] 
@@ -171,14 +160,14 @@ export default function ProfessionalDashboard() {
    const pieOption = {
       backgroundColor: 'transparent',
       tooltip: { trigger: 'item', formatter: '{b}: {c}%' },
-      legend: { bottom: '0', left: 'center', textStyle: { color: 'rgba(255,255,255,0.9)', fontWeight: 'bold' } },
+      legend: { bottom: '0', left: 'center', textStyle: { color: isLight ? '#1e1b4b' : 'rgba(255,255,255,0.9)', fontWeight: 'bold' } },
       series: [{
          name: 'أداء الكويزات',
          type: 'pie',
          radius: ['40%', '70%'],
          avoidLabelOverlap: false,
          itemStyle: { borderRadius: 10, borderColor: 'transparent', borderWidth: 2 },
-         label: { show: true, position: 'outside', color: '#fff', fontWeight: 'bold', formatter: '{c}%' },
+         label: { show: true, position: 'outside', color: isLight ? '#1e1b4b' : '#fff', fontWeight: 'bold', formatter: '{c}%' },
          data: (stats?.quizPerformance || []).map((q: any) => ({
             value: q.percentage,
             name: q.title.replace('كويز ', ''),
@@ -189,18 +178,12 @@ export default function ProfessionalDashboard() {
 
    return (
       <div className="relative min-h-screen pb-20 selection:bg-primary/30" dir="rtl">
-         {/* Pedagogical Background Decorations */}
-         <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0 overflow-hidden">
-            <div className="absolute top-[10%] left-[5%] animate-float"><Scale size={120} /></div>
-            <div className="absolute top-[40%] right-[2%] animate-float-delayed"><GraduationCap size={150} /></div>
-            <div className="absolute bottom-[20%] left-[8%] animate-float"><Users size={130} /></div>
-            <div className="absolute bottom-[5%] right-[10%] animate-float-delayed"><BookOpen size={100} /></div>
-         </div>
 
-         <div className="max-w-7xl mx-auto px-[2px] relative z-10">
+
+         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
             
             {/* Header */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bubbly-card !p-10 mb-12 flex flex-col md:flex-row justify-between items-center gap-8 bg-gradient-to-r from-primary to-indigo text-white border-none shadow-xl relative overflow-hidden">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bubbly-card !p-6 md:!p-10 mb-12 flex flex-col md:flex-row justify-between items-center gap-8 bg-gradient-to-r from-primary to-indigo text-white border-none shadow-xl relative overflow-hidden">
                <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-[80px] -mr-32 -mt-32" />
                <div className="flex items-center gap-8 relative z-10">
                   <div className="w-24 h-24 lg:w-32 lg:h-32 rounded-[2rem] border-4 border-white/20 p-1 bg-white/10 backdrop-blur-xl overflow-hidden shadow-lg">
@@ -236,7 +219,7 @@ export default function ProfessionalDashboard() {
             <div className="flex flex-col gap-10 mb-12">
                
                {/* 1. Radar Chart - REVERTED TO DARK SLATE TO MATCH OTHERS */}
-               <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bubbly-card !p-12 bg-slate-900 text-white border-none shadow-2xl relative overflow-hidden">
+               <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bubbly-card !p-6 md:!p-12 bg-slate-900 text-white border-none shadow-2xl relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-80 h-80 bg-primary/20 rounded-full blur-[100px] -mr-40 -mt-40" />
                   <div className="relative z-10 flex flex-col items-center gap-10">
                      <div className="text-center space-y-4">
@@ -253,7 +236,7 @@ export default function ProfessionalDashboard() {
                </motion.div>
 
                {/* Other Charts - Already Dark Slate */}
-               <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bubbly-card !p-8 bg-slate-900 text-white border-none shadow-xl relative overflow-hidden">
+               <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bubbly-card !p-6 md:!p-8 bg-slate-900 text-white border-none shadow-xl relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-[100px] -mr-32 -mt-32" />
                   <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
                      <div className="md:w-1/4 text-center md:text-right space-y-4">

@@ -6,7 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   User, Mail, BookOpen, Calendar, Camera, Lock,
   Save, LogOut, CheckCircle, AlertCircle, Edit3,
-  Award, Brain, Activity, Target, ChevronRight
+  Award, Brain, Activity, Target, ChevronRight,
+  Scale, GraduationCap, Users
 } from 'lucide-react';
 
 export default function ProfilePage() {
@@ -105,7 +106,7 @@ export default function ProfilePage() {
 
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' });
-    router.push('/login');
+    router.push('/');
   };
 
   const isFemale = ['أنثى', 'onthe', 'female'].includes(user?.gender ?? '');
@@ -128,7 +129,14 @@ export default function ProfilePage() {
     : null;
 
   return (
-    <div className="min-h-screen pb-20" dir="rtl">
+    <div className="min-h-screen pb-20 relative overflow-hidden" dir="rtl">
+      {/* Pedagogical Background Decorations */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0 overflow-hidden">
+         <div className="absolute top-[15%] right-[5%] animate-float"><Scale size={140} /></div>
+         <div className="absolute top-[45%] left-[2%] animate-float-delayed"><GraduationCap size={160} /></div>
+         <div className="absolute bottom-[25%] right-[8%] animate-float"><Users size={150} /></div>
+         <div className="absolute bottom-[8%] left-[10%] animate-float-delayed"><BookOpen size={110} /></div>
+      </div>
       <div className="max-w-4xl mx-auto px-6 pt-8">
 
         {/* Back Button */}

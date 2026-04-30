@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { Scale, GraduationCap, Users, BookOpen } from 'lucide-react';
 
 interface Comment {
   id: number;
@@ -222,7 +223,14 @@ export default function ForumPage() {
     .filter(p => p.title.includes(searchQuery) || p.content.includes(searchQuery));
 
   return (
-    <div className="min-h-screen bg-background text-foreground text-right font-sans selection:bg-primary/30 flex flex-col items-center w-full" dir="rtl">
+    <div className="min-h-screen bg-background text-foreground text-right font-sans selection:bg-primary/30 flex flex-col items-center w-full relative overflow-hidden" dir="rtl">
+      {/* Pedagogical Background Decorations */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0 overflow-hidden">
+         <div className="absolute top-[10%] left-[5%] animate-float"><Scale size={130} /></div>
+         <div className="absolute top-[40%] right-[2%] animate-float-delayed"><GraduationCap size={150} /></div>
+         <div className="absolute bottom-[20%] left-[8%] animate-float"><Users size={140} /></div>
+         <div className="absolute bottom-[5%] right-[10%] animate-float-delayed"><BookOpen size={100} /></div>
+      </div>
       
       {/* Immersive Header */}
       <header className="w-full smooth-glass border-b border-border p-6 md:p-10 sticky top-0 z-50 animate-soft">

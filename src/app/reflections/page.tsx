@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Scale, GraduationCap, Users, BookOpen } from 'lucide-react';
 
 export default function ReflectionsPage() {
   const router = useRouter();
@@ -91,6 +92,14 @@ export default function ReflectionsPage() {
       {/* Immersive Decorative Background */}
       <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] bg-primary/5 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-secondary/5 rounded-full blur-[150px] pointer-events-none" />
+
+      {/* Pedagogical Background Decorations */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0 overflow-hidden">
+         <div className="absolute top-[5%] left-[2%] animate-float"><Scale size={180} /></div>
+         <div className="absolute top-[25%] right-[5%] animate-float-delayed"><GraduationCap size={160} /></div>
+         <div className="absolute bottom-[30%] left-[8%] animate-float"><Users size={140} /></div>
+         <div className="absolute bottom-[5%] right-[1%] animate-float-delayed"><BookOpen size={130} /></div>
+      </div>
 
       <main className="w-full max-w-[1440px] px-6 py-12 md:py-24 relative z-10">
         <header className="mb-20 animate-soft">

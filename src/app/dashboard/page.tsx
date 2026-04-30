@@ -19,7 +19,10 @@ import {
   MessageSquare,
   MessageCircle,
   Heart,
-  Share2
+  Share2,
+  Scale,
+  GraduationCap,
+  Users
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -186,7 +189,15 @@ export default function ProfessionalDashboard() {
 
    return (
       <div className="relative min-h-screen pb-20 selection:bg-primary/30" dir="rtl">
-         <div className="max-w-7xl mx-auto px-[2px]">
+         {/* Pedagogical Background Decorations */}
+         <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0 overflow-hidden">
+            <div className="absolute top-[10%] left-[5%] animate-float"><Scale size={120} /></div>
+            <div className="absolute top-[40%] right-[2%] animate-float-delayed"><GraduationCap size={150} /></div>
+            <div className="absolute bottom-[20%] left-[8%] animate-float"><Users size={130} /></div>
+            <div className="absolute bottom-[5%] right-[10%] animate-float-delayed"><BookOpen size={100} /></div>
+         </div>
+
+         <div className="max-w-7xl mx-auto px-[2px] relative z-10">
             
             {/* Header */}
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bubbly-card !p-10 mb-12 flex flex-col md:flex-row justify-between items-center gap-8 bg-gradient-to-r from-primary to-indigo text-white border-none shadow-xl relative overflow-hidden">

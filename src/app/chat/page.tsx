@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { Scale, GraduationCap, Users, BookOpen } from 'lucide-react';
 
 interface User {
   id: string;
@@ -146,6 +147,14 @@ export default function ProChatPage() {
       {/* Decorative Blur Backgrounds */}
       <div className="absolute top-[-10%] right-[-10%] w-[40vw] h-[40vw] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-secondary/10 rounded-full blur-[120px] pointer-events-none" />
+
+      {/* Pedagogical Background Decorations */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0 overflow-hidden">
+         <div className="absolute top-[10%] left-[5%] animate-float"><Scale size={130} /></div>
+         <div className="absolute top-[40%] right-[2%] animate-float-delayed"><GraduationCap size={150} /></div>
+         <div className="absolute bottom-[20%] left-[8%] animate-float"><Users size={140} /></div>
+         <div className="absolute bottom-[5%] right-[10%] animate-float-delayed"><BookOpen size={100} /></div>
+      </div>
 
       {/* Modern Header */}
       <header className="px-8 py-6 smooth-glass border-b border-border/50 flex justify-between items-center z-50 animate-soft">

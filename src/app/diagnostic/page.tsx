@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
+import { Scale, GraduationCap, Users, BookOpen } from 'lucide-react';
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false });
 
@@ -236,6 +237,14 @@ export default function DiagnosticPage() {
       {/* Decorative Elements */}
       <div className="absolute top-[-10%] right-[-10%] w-[40vw] h-[40vw] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-secondary/10 rounded-full blur-[120px] pointer-events-none" />
+
+      {/* Pedagogical Background Decorations */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0 overflow-hidden">
+         <div className="absolute top-[10%] left-[2%] animate-float"><Scale size={160} /></div>
+         <div className="absolute top-[35%] right-[5%] animate-float-delayed"><GraduationCap size={140} /></div>
+         <div className="absolute bottom-[20%] left-[10%] animate-float"><Users size={120} /></div>
+         <div className="absolute bottom-[5%] right-[2%] animate-float-delayed"><BookOpen size={130} /></div>
+      </div>
 
       <div className="w-full max-w-5xl px-6 relative z-10 py-12 flex-1 flex flex-col justify-center">
         {gameState === 'intro' && (

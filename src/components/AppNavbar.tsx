@@ -29,7 +29,7 @@ export default async function AppNavbar() {
               <Scale size={24} strokeWidth={2.5} />
             </div>
             <div className="flex flex-col">
-              <span className="text-2xl font-black text-foreground leading-none">قيم <span className="text-primary">وتعلم</span></span>
+              <span className="text-2xl font-black text-foreground leading-none tracking-tight">قيم <span className="text-primary">وتعلم</span></span>
               <span className="text-[11px] font-bold text-muted-foreground tracking-widest mt-1">منصة الوعي الجندري</span>
             </div>
           </Link>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { Scale, GraduationCap, Users, BookOpen } from 'lucide-react';
 
 const quizCategories = [
   {
@@ -344,6 +345,14 @@ export default function QuizzesPage() {
         {/* Background Glows */}
         <div className="absolute top-[-10%] right-[-10%] w-[40vw] h-[40vw] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-secondary/10 rounded-full blur-[120px] pointer-events-none" />
+
+        {/* Pedagogical Background Decorations */}
+        <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0 overflow-hidden">
+           <div className="absolute top-[20%] left-[5%] animate-float"><Scale size={130} /></div>
+           <div className="absolute top-[50%] right-[2%] animate-float-delayed"><GraduationCap size={150} /></div>
+           <div className="absolute bottom-[30%] left-[8%] animate-float"><Users size={140} /></div>
+           <div className="absolute bottom-[10%] right-[10%] animate-float-delayed"><BookOpen size={100} /></div>
+        </div>
 
         <div className="w-full max-w-6xl space-y-12 relative z-10">
           <div className="text-center space-y-6 animate-soft">

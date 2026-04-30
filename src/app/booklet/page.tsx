@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { Scale, GraduationCap, Users, BookOpen } from 'lucide-react';
 
 const bookletPages = [
   {
@@ -191,6 +192,14 @@ export default function BookletPage() {
       {/* Background Glows */}
       <div className="absolute top-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-[-20%] left-[-10%] w-[60vw] h-[60vw] bg-secondary/10 rounded-full blur-[150px] pointer-events-none" />
+
+      {/* Pedagogical Background Decorations */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0 overflow-hidden">
+         <div className="absolute top-[15%] right-[5%] animate-float"><Scale size={140} /></div>
+         <div className="absolute top-[45%] left-[2%] animate-float-delayed"><GraduationCap size={160} /></div>
+         <div className="absolute bottom-[25%] right-[8%] animate-float"><Users size={150} /></div>
+         <div className="absolute bottom-[8%] left-[10%] animate-float-delayed"><BookOpen size={110} /></div>
+      </div>
 
       <div className="w-full max-w-4xl flex flex-col gap-6 relative z-10">
         {/* Navigation Info */}

@@ -176,19 +176,9 @@ export default function BookletPage() {
     if (hasTracked.current) return;
     hasTracked.current = true;
 
-    const trackVisit = async () => {
-      try {
-        const userStr = localStorage.getItem('user') || localStorage.getItem('currentUser');
-        if (!userStr) return;
-        const user = JSON.parse(userStr);
-        const userId = user.id || user.userId;
-        if (!userId) return;
-        await fetch(`/api/booklet-visit?userId=${userId}`, { method: 'POST' });
-      } catch (e) {
-        console.error('Could not track booklet visit', e);
-      }
-    };
-    trackVisit();
+    // Use session cookie (no localStorage) — works on mobile too
+    fetch('/api/booklet-visit', { method: 'POST', credentials: 'include' })
+      .catch(e => console.error('Could not track booklet visit', e));
   }, []);
 
   const nextPage = () => {

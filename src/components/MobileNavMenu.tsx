@@ -30,8 +30,8 @@ export default function MobileNavMenu({ items }: { items: NavItem[] }) {
 
       {isOpen && (
         <div
-          style={{ position: 'fixed', top: 80, left: 16, right: 16, zIndex: 9999 }}
-          className="smooth-glass rounded-2xl p-4 flex flex-col gap-2 shadow-2xl border border-border"
+          style={{ position: 'fixed', top: 80, left: 16, right: 16, zIndex: 9999, background: 'var(--card)', borderColor: 'var(--border)' }}
+          className="rounded-2xl p-4 flex flex-col gap-2 shadow-2xl border"
         >
           {items.map((item) => (
             <Link

@@ -278,36 +278,37 @@ export default function ProChatPage() {
       </main>
 
       {/* Modern Input Bar */}
-      <footer className="p-8 smooth-glass border-t border-border/50 z-50">
-         <div className="max-w-5xl mx-auto space-y-6">
+      <footer className="p-3 md:p-8 smooth-glass border-t border-border/50 z-50">
+         <div className="max-w-5xl mx-auto space-y-3 md:space-y-6">
             {showEmojiGrid && (
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-8 p-8 bubbly-card border-2 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] grid grid-cols-8 gap-4 animate-soft">
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 md:mb-8 p-4 md:p-8 bubbly-card border-2 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] grid grid-cols-8 gap-2 md:gap-4 animate-soft">
                  {emojis.map(e => (
-                   <button key={e} onClick={() => { handleSendMessage(e, 'emoji'); setShowEmojiGrid(false); }} className="text-4xl hover:scale-150 transition-all p-3 hover:bg-muted rounded-2xl transform active:scale-90">{e}</button>
+                   <button key={e} onClick={() => { handleSendMessage(e, 'emoji'); setShowEmojiGrid(false); }} className="text-2xl md:text-4xl hover:scale-150 transition-all p-1 md:p-3 hover:bg-muted rounded-xl md:rounded-2xl transform active:scale-90">{e}</button>
                  ))}
               </div>
             )}
 
             {isRecording && (
-              <div className="absolute inset-x-0 bottom-full bg-card/95 backdrop-blur-3xl p-10 flex items-center justify-between z-[60] animate-soft border-t-2 border-primary/30 shadow-[0_-20px_40px_rgba(0,0,0,0.1)]">
-                 <div className="flex items-center gap-10">
+              <div className="absolute inset-x-0 bottom-full bg-card/95 backdrop-blur-3xl p-6 md:p-10 flex items-center justify-between z-[60] animate-soft border-t-2 border-primary/30 shadow-[0_-20px_40px_rgba(0,0,0,0.1)]">
+                 <div className="flex items-center gap-4 md:gap-10">
                     <div className="relative">
-                       <div className="w-16 h-16 bg-red-500 rounded-full animate-ping opacity-30 absolute inset-0" />
-                       <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center text-white text-2xl relative z-10 shadow-xl">🎙️</div>
+                       <div className="w-10 h-10 md:w-16 md:h-16 bg-red-500 rounded-full animate-ping opacity-30 absolute inset-0" />
+                       <div className="w-10 h-10 md:w-16 md:h-16 bg-red-500 rounded-full flex items-center justify-center text-white text-xl md:text-2xl relative z-10 shadow-xl">🎙️</div>
                     </div>
                     <div className="space-y-1">
-                       <p className="text-3xl font-black text-gradient">جاري تسجيل فكرتك...</p>
-                       <p className="text-xl font-bold opacity-50 tracking-widest">{recordingTime} ثانية</p>
+                       <p className="text-xl md:text-3xl font-black text-gradient">جاري تسجيل فكرتك...</p>
+                       <p className="text-base md:text-xl font-bold opacity-50 tracking-widest">{recordingTime} ثانية</p>
                     </div>
                  </div>
-                 <button onClick={stopRecording} className="btn-smooth btn-smooth-primary !px-16 !py-6 !text-2xl font-black shadow-[0_20px_40px_rgba(var(--primary-rgb),0.4)] animate-bounce">إيقاف وإرسال الآن 🚀</button>
+                 <button onClick={stopRecording} className="btn-smooth btn-smooth-primary !px-6 md:!px-16 !py-3 md:!py-6 !text-base md:!text-2xl font-black">إيقاف 🚀</button>
               </div>
             )}
 
-            <div className="flex items-center gap-6">
-               <div className="flex gap-3">
-                  <button type="button" onClick={() => setShowEmojiGrid(!showEmojiGrid)} className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center text-3xl border-2 transition-all ${showEmojiGrid ? 'bg-primary border-primary text-white' : 'bg-card border-border hover:border-primary/50'}`}>😊</button>
-                  <button type="button" onClick={() => fileInputRef.current?.click()} className="w-16 h-16 rounded-[1.5rem] bg-card border-2 border-border hover:border-primary/50 flex items-center justify-center text-3xl transition-all">📷</button>
+            <div className="flex items-center gap-2 md:gap-6">
+               {/* Small icon buttons on mobile */}
+               <div className="flex gap-1 md:gap-3">
+                  <button type="button" onClick={() => setShowEmojiGrid(!showEmojiGrid)} className={`w-9 h-9 md:w-16 md:h-16 rounded-xl md:rounded-[1.5rem] flex items-center justify-center text-xl md:text-3xl border-2 transition-all ${showEmojiGrid ? 'bg-primary border-primary text-white' : 'bg-card border-border hover:border-primary/50'}`}>😊</button>
+                  <button type="button" onClick={() => fileInputRef.current?.click()} className="w-9 h-9 md:w-16 md:h-16 rounded-xl md:rounded-[1.5rem] bg-card border-2 border-border hover:border-primary/50 flex items-center justify-center text-xl md:text-3xl transition-all">📷</button>
                </div>
                
                <input type="file" ref={fileInputRef} onChange={(e) => {
@@ -319,31 +320,32 @@ export default function ProChatPage() {
                   }
                }} className="hidden" accept="image/*" />
 
+               {/* Bigger input — takes most space */}
                <div className="flex-1 relative group">
-                  <div className="absolute inset-0 bg-primary/5 rounded-[2rem] blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity" />
+                  <div className="absolute inset-0 bg-primary/5 rounded-2xl md:rounded-[2rem] blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity" />
                   <input 
                     type="text" 
-                    placeholder="شارك زملاءك فكرة تربوية أو موقفاً ملهماً..." 
-                    className="w-full bg-card border-2 border-border rounded-[2rem] py-6 px-10 text-2xl font-bold focus:border-primary transition-all outline-none shadow-inner relative z-10"
+                    placeholder="شارك فكرة تربوية..." 
+                    className="w-full bg-card border-2 border-border rounded-2xl md:rounded-[2rem] py-3 md:py-6 px-4 md:px-10 text-base md:text-2xl font-bold focus:border-primary transition-all outline-none shadow-inner relative z-10"
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && (handleSendMessage(newMessage), setNewMessage(''))}
                   />
                </div>
 
-               <div className="flex gap-4">
+               <div className="flex gap-1 md:gap-4">
                   <button 
                     type="button" 
                     onClick={startRecording}
-                    className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center text-3xl border-2 transition-all shadow-xl
+                    className={`w-9 h-9 md:w-16 md:h-16 rounded-xl md:rounded-[1.5rem] flex items-center justify-center text-xl md:text-3xl border-2 transition-all shadow-xl
                       ${isRecording ? 'bg-red-500 border-red-500 animate-pulse text-white' : 'bg-card border-border hover:border-primary/50'}
                     `}
                   >
                     🎙️
                   </button>
 
-                  <button onClick={() => { handleSendMessage(newMessage); setNewMessage(''); }} className="w-20 h-20 rounded-[1.5rem] bg-primary text-white flex items-center justify-center shadow-[0_20px_40px_rgba(var(--primary-rgb),0.3)] hover:shadow-2xl active:scale-90 transition-all group">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="rotate-180 group-hover:translate-x-2 transition-transform"><path d="m15 18-6-6 6-6"/></svg>
+                  <button onClick={() => { handleSendMessage(newMessage); setNewMessage(''); }} className="w-10 h-10 md:w-20 md:h-20 rounded-xl md:rounded-[1.5rem] bg-primary text-white flex items-center justify-center shadow-[0_10px_20px_rgba(var(--primary-rgb),0.3)] hover:shadow-2xl active:scale-90 transition-all group">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="rotate-180 group-hover:translate-x-1 transition-transform"><path d="m15 18-6-6 6-6"/></svg>
                   </button>
                </div>
             </div>

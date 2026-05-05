@@ -63,11 +63,46 @@ export default function ProfilePage() {
     load();
   }, [router]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    
+    // Check file size (Base64 can be large, limit to ~2MB for DB stability)
+    if (file.size > 2 * 1024 * 1024) {
+      setMessage({ type: 'error', text: 'الصورة كبيرة جداً، يرجى اختيار صورة أقل من 2 ميجابايت' });
+      return;
+    }
+
     const reader = new FileReader();
-    reader.onloadend = () => setForm(f => ({ ...f, image: reader.result as string }));
+    reader.onloadend = async () => {
+      const base64 = reader.result as string;
+      
+      // 1. Update local UI state immediately
+      setForm(f => ({ ...f, image: base64 }));
+      setSaving(true);
+
+      try {
+        // 2. Save directly to database immediately
+        const res = await fetch('/api/auth/profile', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image: base64 })
+        });
+        
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data.user);
+          setMessage({ type: 'success', text: 'تم تحديث صورة الملف الشخصي بنجاح ✅' });
+        } else {
+          setMessage({ type: 'error', text: 'فشل حفظ الصورة في قاعدة البيانات' });
+        }
+      } catch (err) {
+        setMessage({ type: 'error', text: 'خطأ في الاتصال' });
+      } finally {
+        setSaving(false);
+        setTimeout(() => setMessage(null), 3000);
+      }
+    };
     reader.readAsDataURL(file);
   };
 

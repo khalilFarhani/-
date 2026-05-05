@@ -57,7 +57,7 @@ export default function Home() {
             <ThemeToggle />
 
             {isLoggedIn ? (
-              <Link href="/dashboard" className="btn-smooth btn-smooth-primary py-2 px-6">لوحة القيادة</Link>
+              <Link href="/dashboard" className="btn-smooth btn-smooth-primary py-2 px-6">تسجيل الدخول</Link>
             ) : (
               <div className="flex items-center gap-4">
                 <Link href="/login" className="btn-smooth btn-smooth-primary py-2 px-6">تسجيل الدخول</Link>
@@ -96,7 +96,7 @@ export default function Home() {
               </Link>
             ))}
             {isLoggedIn ? (
-              <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)} className="btn-smooth btn-smooth-primary py-3 px-6 text-center mt-2">لوحة القيادة</Link>
+              <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)} className="btn-smooth btn-smooth-primary py-3 px-6 text-center mt-2">تسجيل الدخول</Link>
             ) : (
               <div className="flex flex-col gap-3 mt-2">
                 <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="btn-smooth btn-smooth-primary py-3 px-6 text-center">تسجيل الدخول</Link>
